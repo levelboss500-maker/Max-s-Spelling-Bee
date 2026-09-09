@@ -387,6 +387,11 @@
         <strong id="timer">0:00</strong>
     </div>
 
+    <div class="stat">
+        <span>WPM</span>
+        <strong id="wpm">0</strong>
+    </div>
+
 </div>
 
 <!-- GAME MODE SELECTOR -->
@@ -815,6 +820,8 @@ let answered = false;
 
 let timeLeft = 0;
 let timerId = null;
+let wordStartTime = 0;
+let currentWpm = 0;
 
 let audioContext = null;
 let selectedMode = "easy";
@@ -1176,6 +1183,9 @@ function loadWord() {
     answered = false;
 
     hintUsed = false;
+    wordStartTime = performance.now();
+    currentWpm = 0;
+    $("wpm").textContent = "0";
 
 
     const [
@@ -1356,6 +1366,15 @@ function check(
 
 
     answered = true;
+
+    const elapsedMinutes =
+        Math.max((performance.now() - wordStartTime) / 60000, 1 / 60000);
+
+    // WPM is based on the number of correctly typed letters divided by 5.
+    // It is shown when the player finishes typing/submits the word.
+    const typedCharacters = $("answer").value.trim().length;
+    currentWpm = Math.round((typedCharacters / 5) / elapsedMinutes);
+    $("wpm").textContent = currentWpm;
 
     stopTimer();
 
@@ -1689,6 +1708,8 @@ $("restart").onclick = () => {
     $("subtitleTotal").textContent = "0";
 
     $("timer").textContent = "0:00";
+    $("wpm").textContent = "0";
+    currentWpm = 0;
 
     $("bar").style.width = "0%";
 };
