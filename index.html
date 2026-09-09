@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+```
 <title>Max's Spelling Bee</title>
 
 <style>
@@ -136,6 +137,10 @@
 
     .badge.easy {
         background: #2f9e44;
+    }
+
+    .badge.professional {
+        background: #d62839;
     }
 
     .prompt {
@@ -318,6 +323,134 @@
         background: #faf8ff;
     }
 
+    /* COLOR-CODED GAME MODE BUTTONS */
+
+    .mode-button.easy-mode {
+        border-color: #2f9e44;
+        background: #f2fbf4;
+    }
+
+    .mode-button.easy-mode strong {
+        color: #2f9e44;
+    }
+
+    .mode-button.easy-mode:hover {
+        border-color: #267a36;
+        background: #e8f7eb;
+    }
+
+    .mode-button.medium-mode {
+        border-color: #2a9d8f;
+        background: #f0fbf9;
+    }
+
+    .mode-button.medium-mode strong {
+        color: #2a9d8f;
+    }
+
+    .mode-button.medium-mode:hover {
+        border-color: #217a70;
+        background: #e5f7f4;
+    }
+
+    .mode-button.advanced-mode {
+        border-color: #4361ee;
+        background: #f2f5ff;
+    }
+
+    .mode-button.advanced-mode strong {
+        color: #4361ee;
+    }
+
+    .mode-button.advanced-mode:hover {
+        border-color: #344dcc;
+        background: #e9edff;
+    }
+
+    .mode-button.professional-mode {
+        border-color: #d62839;
+        background: #fff5f5;
+    }
+
+    .mode-button.professional-mode strong {
+        color: #d62839;
+    }
+
+    .mode-button.professional-mode:hover {
+        border-color: #b51f30;
+        background: #ffecee;
+    }
+
+    .mode-button.genius-mode {
+        border-color: #7b2cbf;
+        background: #faf3ff;
+    }
+
+    .mode-button.genius-mode strong {
+        color: #7b2cbf;
+    }
+
+    .mode-button.genius-mode:hover {
+        border-color: #62229a;
+        background: #f3e8ff;
+    }
+
+    .mode-button.master-mode {
+        border-color: #123b6d;
+        background: #f2f7fc;
+    }
+
+    .mode-button.master-mode strong {
+        color: #123b6d;
+    }
+
+    .mode-button.master-mode:hover {
+        border-color: #0d2b50;
+        background: #e8f1f9;
+    }
+
+    .mode-button.extreme-mode {
+        border-color: #f28c28;
+        background: #fff8ef;
+    }
+
+    .mode-button.extreme-mode strong {
+        color: #f28c28;
+    }
+
+    .mode-button.extreme-mode:hover {
+        border-color: #c96f16;
+        background: #fff0dd;
+    }
+
+    .mode-button.impossible-mode {
+        border-color: #d62839;
+        background: #fff5f5;
+    }
+
+    .mode-button.impossible-mode strong {
+        color: #d62839;
+    }
+
+    .mode-button.impossible-mode:hover {
+        border-color: #b51f30;
+        background: #ffecee;
+    }
+
+    .mode-button.omnipotent-mode {
+        border-color: #000000;
+        background: #f5f5f5;
+    }
+
+    .mode-button.omnipotent-mode strong {
+        color: #000000;
+    }
+
+    .mode-button.omnipotent-mode:hover {
+        border-color: #333333;
+        background: #ededed;
+    }
+
     .mode-title {
         text-align: center;
         margin: 0 0 8px;
@@ -326,7 +459,7 @@
 
     @media (max-width: 600px) {
         .mode-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .stats {
@@ -338,6 +471,7 @@
         }
     }
 </style>
+```
 
 </head>
 
@@ -345,16 +479,16 @@
 
 <div class="app">
 
+```
 <header>
-
     <h1>Max's Spelling Bee</h1>
 
     <p class="subtitle">
         <span id="subtitleTotal">0</span>
         words.
     </p>
-
 </header>
+
 
 <!-- STATS -->
 
@@ -394,6 +528,7 @@
 
 </div>
 
+
 <!-- GAME MODE SELECTOR -->
 
 <main class="mode-select" id="modeSelect">
@@ -406,6 +541,8 @@
 
     <div class="mode-grid">
 
+        <!-- ROW 1: EASY / MEDIUM -->
+
         <button type="button" class="mode-button easy-mode" data-mode="easy">
             <strong>🟢 Easy</strong>
             <small>Everyday vocabulary</small>
@@ -416,10 +553,21 @@
             <small>School &amp; general vocabulary</small>
         </button>
 
+
+        <!-- ROW 2: ADVANCED / PROFESSIONAL -->
+
         <button type="button" class="mode-button advanced-mode" data-mode="advanced">
             <strong>🟣 Advanced</strong>
             <small>Challenging vocabulary</small>
         </button>
+
+        <button type="button" class="mode-button professional-mode" data-mode="professional">
+            <strong>🔴 Professional</strong>
+            <small>Spelling-bee-style vocabulary</small>
+        </button>
+
+
+        <!-- ROW 3: GENIUS / MASTER -->
 
         <button type="button" class="mode-button genius-mode" data-mode="genius">
             <strong>🧠 Genius</strong>
@@ -431,6 +579,9 @@
             <small>Original Master words</small>
         </button>
 
+
+        <!-- ROW 4: EXTREME / IMPOSSIBLE -->
+
         <button type="button" class="mode-button extreme-mode" data-mode="extreme">
             <strong>🔥 Extreme</strong>
             <small>Original Extreme words</small>
@@ -441,6 +592,9 @@
             <small>Original Impossible words</small>
         </button>
 
+
+        <!-- ROW 5: OMNIPOTENT -->
+
         <button type="button" class="mode-button omnipotent-mode" data-mode="omnipotent">
             <strong>👑 Omnipotent</strong>
             <small>Original Omnipotent words</small>
@@ -449,6 +603,7 @@
     </div>
 
 </main>
+
 
 <!-- GAME -->
 
@@ -482,6 +637,7 @@
 
     </section>
 
+
     <!-- ANSWER INPUT -->
 
     <div class="input-row">
@@ -501,51 +657,36 @@
 
     </div>
 
+
     <!-- ACTION BUTTONS -->
 
     <div class="actions">
 
-        <button
-            class="secondary"
-            id="speak"
-        >
+        <button class="secondary" id="speak">
             🔊 Replay Word
         </button>
 
-        <button
-            class="secondary"
-            id="hintBtn"
-        >
+        <button class="secondary" id="hintBtn">
             💡 Hint
         </button>
 
-        <button
-            class="secondary"
-            id="skip"
-        >
+        <button class="secondary" id="skip">
             Skip
         </button>
 
     </div>
 
+
     <!-- FEEDBACK -->
 
-    <div
-        class="feedback"
-        id="feedback"
-    ></div>
+    <div class="feedback" id="feedback"></div>
 
-    <div
-        class="definition hidden"
-        id="meaning"
-    ></div>
+    <div class="definition hidden" id="meaning"></div>
+
 
     <!-- NEXT WORD -->
 
-    <div
-        class="actions hidden"
-        id="nextWrap"
-    >
+    <div class="actions hidden" id="nextWrap">
 
         <button id="next">
             Next Word →
@@ -559,12 +700,10 @@
 
 </main>
 
+
 <!-- RESULTS -->
 
-<main
-    class="game modal hidden"
-    id="results"
->
+<main class="game modal hidden" id="results">
 
     <div style="font-size: 4rem;">
         🏆
@@ -574,10 +713,7 @@
         Bee complete!
     </h2>
 
-    <div
-        class="final-score"
-        id="finalScore"
-    >
+    <div class="final-score" id="finalScore">
         0
     </div>
 
@@ -626,6 +762,7 @@ const modeWords = {
         ["experience", "[Noun] Knowledge gained by doing or observing something.", "Easy"]
     ],
 
+
     /* =========================
        MEDIUM MODE
        ========================= */
@@ -649,6 +786,7 @@ const modeWords = {
         ["inconvenient", "[Adjective] Causing trouble or difficulty.", "Medium"],
         ["questionnaire", "[Noun] A set of questions used to collect information.", "Medium"]
     ],
+
 
     /* =========================
        ADVANCED MODE
@@ -674,44 +812,30 @@ const modeWords = {
         ["perspicacious", "[Adjective] Having a ready insight into things.", "Advanced"]
     ],
 
+
     /* =========================
        GENIUS MODE
-       
-       IMPORTANT:
        EXACTLY 15 WORDS
        ========================= */
 
     genius: [
         ["Pneumonoultramicroscopicsilicovolcanoconiosis", "[Noun] A famously long word referring to a lung disease caused by inhaling very fine silica dust.", "Genius"],
-
         ["Floccinaucinihilipilification", "[Noun] The act of describing something as worthless.", "Genius"],
-
         ["Antidisestablishmentarianism", "[Noun] Opposition to the withdrawal of state support from an established church.", "Genius"],
-
         ["Honorificabilitudinitatibus", "[Noun] A famously long word associated with the ability to achieve honors.", "Genius"],
-
         ["Psychopharmacological", "[Adjective] Relating to the effects of drugs on mood, behavior, or mental processes.", "Genius"],
-
         ["Electroencephalographically", "[Adverb] In a manner relating to recording electrical activity of the brain.", "Genius"],
-
         ["Otorhinolaryngological", "[Adjective] Relating to the medical specialty involving the ear, nose, and throat.", "Genius"],
-
         ["Quasiautobiographical", "[Adjective] A written work that is only partially related to the author's actual life.", "Genius"],
-
         ["Hippopotomonstrosesquippedaliophobia", "[Noun] The fear of long words.", "Genius"],
-
         ["Keratoconjunctivitides", "[Noun] A medical term relating to different types of a gum ailment.", "Genius"],
-        
         ["Scaphotrapeziotrapezoid", "[Noun] A wrist connection involving three small bones.", "Genius"],
-
         ["Quasichromatographically", "[Adverb] In a manner that resembles, approximates, or behaves similarly to chromatography.", "Genius"],
-
         ["Chargoggagoggmanchauggagoggchaubunagungamaugg", "[Noun] A lake in Webster, Massachusetts.", "Genius"],
-
         ["Phosphatidylethanolamine", "[Noun] A phospholipid that helps maintain the structure of cell membranes.", "Genius"],
-
         ["Deinstitutionalization", "[Noun] The process of moving people from large institutions toward community-based care.", "Genius"]
     ],
+
 
     /* =========================
        MASTER MODE
@@ -732,6 +856,7 @@ const modeWords = {
         ["Oikodespotokrystallochrysoendodomopyrokatastrophophobia", "[Noun] Definition: Fear of a homeowner's glass and gold interior being destroyed by an indoor fire.", "Master"]
     ],
 
+
     /* =========================
        EXTREME MODE
        ========================= */
@@ -750,6 +875,7 @@ const modeWords = {
         ["Triseseososeseososeseososeseososeseososeseososeseososeseos", "A fictional linguistically created word that has no inherent meaning.", "Extreme"],
         ["Rindfleischetikettierungsuberwachungsaufgabenubertragungsgesetz", "[Noun] Definition: The beef labeling supervision duties delegation law.", "Extreme"]
     ],
+
 
     /* =========================
        IMPOSSIBLE MODE
@@ -772,6 +898,40 @@ const modeWords = {
         ["Husstenhasstencaffincoffintussemtossemdamandamnacosaghcusaghhobixhatouxpeswchbechoscashlcarcarcaract", "[Adjective] Definition: Describes a cough.", "Impossible"],
         ["Ullhodturdenweirmudgaardgringnirurdrmolnirfenrirlukkilokkibaugimandodrrerinsurtkrinmgernrackinarockar", "[Adjective] Definition: The description of Norse gods going on an angry rumble of destruction.", "Impossible"]
     ],
+
+
+    /* =========================
+       PROFESSIONAL MODE
+       ========================= */
+
+    professional: [
+        ["acquiescence", "[Noun] Passive acceptance or agreement without protest.", "Professional"],
+        ["appoggiatura", "[Noun] A musical ornament consisting of a note performed before a principal note.", "Professional"],
+        ["chiaroscuro", "[Noun] The treatment of light and shade in a picture.", "Professional"],
+        ["defenestration", "[Noun] The act of throwing someone or something out of a window.", "Professional"],
+        ["epistolary", "[Adjective] Relating to or written in the form of letters.", "Professional"],
+        ["floccose", "[Adjective] Covered with soft, woolly tufts or fibers.", "Professional"],
+        ["grandiloquent", "[Adjective] Characterized by pompous or extravagant language.", "Professional"],
+        ["hagiography", "[Noun] An idealized biography of a saint or other highly admired person.", "Professional"],
+        ["incunabula", "[Noun] Books printed before the middle of the sixteenth century.", "Professional"],
+        ["legerdemain", "[Noun] Skillful use of one's hands to perform tricks or deceive.", "Professional"],
+        ["logorrhea", "[Noun] Excessive and often incoherent talkativeness.", "Professional"],
+        ["mellifluous", "[Adjective] Pleasantly smooth and musical to hear.", "Professional"],
+        ["onomatopoeia", "[Noun] A word whose sound imitates or suggests its meaning.", "Professional"],
+        ["perspicacity", "[Noun] A sharpness of insight or discernment.", "Professional"],
+        ["pleonasm", "[Noun] The use of more words than necessary to express an idea.", "Professional"],
+        ["sesquipedalian", "[Adjective] Characterized by the use of long words.", "Professional"],
+        ["somnambulism", "[Noun] Sleepwalking; walking or performing actions while asleep.", "Professional"],
+        ["synecdoche", "[Noun] A figure of speech in which a part represents the whole or vice versa.", "Professional"],
+        ["tergiversation", "[Noun] Evasion or equivocation in speech or action.", "Professional"],
+        ["vicissitude", "[Noun] A change of circumstances, especially an unwelcome one.", "Professional"],
+        ["zeugma", "[Noun] A figure of speech in which one word governs two others in different senses.", "Professional"],
+        ["sesquipedalianism", "[Noun] The habit of using unusually long words.", "Professional"],
+        ["xenodochy", "[Noun] Hospitality shown to strangers or foreigners.", "Professional"],
+        ["zymurgy", "[Noun] The study or practice of fermentation in brewing and winemaking.", "Professional"],
+        ["callipygian", "[Adjective] Having well-shaped buttocks.", "Professional"]
+    ],
+
 
     /* =========================
        OMNIPOTENT MODE
@@ -799,7 +959,8 @@ const modeNames = {
     master: "Master",
     extreme: "Extreme",
     impossible: "Impossible",
-    omnipotent: "Omnipotent"
+    omnipotent: "Omnipotent",
+    professional: "Professional"
 };
 
 
@@ -837,11 +998,6 @@ function getModePool(mode) {
         return [];
     }
 
-    /*
-        Make a new array so the original vocabulary
-        list is never modified.
-    */
-
     return modeWords[mode].map(word => [...word]);
 }
 
@@ -862,13 +1018,6 @@ function updateTotalDisplay() {
    ========================================= */
 
 function shuffle(array) {
-
-    /*
-        Fisher-Yates shuffle.
-
-        This guarantees that every item remains
-        in the array while randomizing the order.
-    */
 
     const result = [...array];
 
@@ -925,8 +1074,6 @@ function playTypingClick() {
             audioContext.currentTime;
 
 
-        /* Main click */
-
         const osc =
             audioContext.createOscillator();
 
@@ -966,8 +1113,6 @@ function playTypingClick() {
         osc.start(now);
         osc.stop(now + 0.05);
 
-
-        /* Small second click */
 
         const tick =
             audioContext.createOscillator();
@@ -1055,11 +1200,6 @@ function startTimer() {
     const word =
         pool[index][0];
 
-    /*
-        One second per letter.
-        Change 1 to 2 or 5 if desired.
-    */
-
     timeLeft =
         word.length * 1;
 
@@ -1108,24 +1248,10 @@ function start(mode = selectedMode) {
         return;
     }
 
-
-    /*
-        Shuffle ALL words.
-
-        No words are removed.
-    */
-
     pool = shuffle(selectedWords);
 
     total = pool.length;
 
-
-    /*
-        Safety check.
-
-        Genius mode should ALWAYS contain
-        exactly 15 vocabulary words.
-    */
 
     if (
         selectedMode === "genius" &&
@@ -1160,8 +1286,14 @@ function start(mode = selectedMode) {
 
     $("results").classList.add("hidden");
 
+
     $("modeTitle").textContent =
         `${modeNames[selectedMode]} Mode`;
+
+    $("modeTitle").classList.toggle(
+        "professional",
+        selectedMode === "professional"
+    );
 
 
     updateTotalDisplay();
@@ -1183,8 +1315,12 @@ function loadWord() {
     answered = false;
 
     hintUsed = false;
-    wordStartTime = performance.now();
+
+    wordStartTime =
+        performance.now();
+
     currentWpm = 0;
+
     $("wpm").textContent = "0";
 
 
@@ -1208,16 +1344,12 @@ function loadWord() {
         correct;
 
 
-    /* Difficulty */
-
     $("difficulty").textContent =
         diff.toUpperCase();
 
     $("difficulty").className =
         "badge " + diff.toLowerCase();
 
-
-    /* Input */
 
     $("answer").value = "";
 
@@ -1228,33 +1360,23 @@ function loadWord() {
     $("answer").dataset.previousLength = "0";
 
 
-    /* Feedback */
-
     $("feedback").textContent = "";
 
     $("feedback").className =
         "feedback";
 
 
-    /* Meaning */
-
     $("meaning").classList.add("hidden");
 
     $("meaning").textContent = "";
 
 
-    /* Next button */
-
     $("nextWrap").classList.add("hidden");
 
-
-    /* Definition */
 
     $("definition").textContent =
         meaning;
 
-
-    /* Progress */
 
     $("bar").style.width =
         (index / total * 100) + "%";
@@ -1262,10 +1384,6 @@ function loadWord() {
 
     startTimer();
 
-
-    /*
-        Automatically pronounce the word.
-    */
 
     setTimeout(() => {
 
@@ -1367,14 +1485,28 @@ function check(
 
     answered = true;
 
-    const elapsedMinutes =
-        Math.max((performance.now() - wordStartTime) / 60000, 1 / 60000);
 
-    // WPM is based on the number of correctly typed letters divided by 5.
-    // It is shown when the player finishes typing/submits the word.
-    const typedCharacters = $("answer").value.trim().length;
-    currentWpm = Math.round((typedCharacters / 5) / elapsedMinutes);
-    $("wpm").textContent = currentWpm;
+    const elapsedMinutes =
+        Math.max(
+            (performance.now() - wordStartTime) / 60000,
+            1 / 60000
+        );
+
+
+    const typedCharacters =
+        $("answer").value.trim().length;
+
+
+    currentWpm =
+        Math.round(
+            (typedCharacters / 5) /
+            elapsedMinutes
+        );
+
+
+    $("wpm").textContent =
+        currentWpm;
+
 
     stopTimer();
 
@@ -1383,6 +1515,7 @@ function check(
         $("answer").value
             .trim()
             .toLowerCase();
+
 
     const correctWord =
         word
@@ -1468,21 +1601,15 @@ function check(
     }
 
 
-    /* SHOW NEXT */
-
     $("nextWrap").classList.remove(
         "hidden"
     );
 
 
-    /* PROGRESS */
-
     $("bar").style.width =
         ((index + 1) / total * 100) +
         "%";
 
-
-    /* STATS */
 
     $("score").textContent =
         score;
@@ -1584,15 +1711,6 @@ $("speak").onclick =
 
 $("next").onclick =
     () => {
-
-        /*
-            If this was the final word,
-            finish the game.
-
-            For Genius:
-            index goes 0 → 14,
-            meaning all 15 questions are played.
-        */
 
         if (index >= total - 1) {
 
@@ -1708,7 +1826,9 @@ $("restart").onclick = () => {
     $("subtitleTotal").textContent = "0";
 
     $("timer").textContent = "0:00";
+
     $("wpm").textContent = "0";
+
     currentWpm = 0;
 
     $("bar").style.width = "0%";
