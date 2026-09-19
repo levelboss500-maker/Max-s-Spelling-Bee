@@ -1,526 +1,733 @@
-
+````
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Max's Spelling Bee</title>
+```
+<title>Max's Spelling Bee</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+    * {
+        box-sizing: border-box;
+    }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
-            background: radial-gradient(
-                circle at top,
-                #fff7d6,
-                #f4ecff 45%,
-                #e8f4ff
-            );
-            color: #24213a;
-            display: flex;
-            justify-content: center;
-            padding: 24px;
-        }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+        background: radial-gradient(
+            circle at top,
+            #fff7d6,
+            #f4ecff 45%,
+            #e8f4ff
+        );
+        color: #24213a;
+        display: flex;
+        justify-content: center;
+        padding: 24px;
+    }
 
-        .app {
-            width: min(900px, 100%);
-        }
+    .app {
+        width: min(900px, 100%);
+    }
 
-        header {
-            text-align: center;
-            margin-bottom: 18px;
-        }
+    header {
+        text-align: center;
+        margin-bottom: 18px;
+    }
 
-        h1 {
-            margin: 0;
-            font-size: clamp(2.2rem, 7vw, 4.2rem);
-            letter-spacing: -2px;
-        }
+    h1 {
+        margin: 0;
+        font-size: clamp(2.2rem, 7vw, 4.2rem);
+        letter-spacing: -2px;
+    }
 
-        .subtitle {
-            margin: 6px 0 0;
-            color: #68647a;
+    .subtitle {
+        margin: 6px 0 0;
+        color: #68647a;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin: 18px 0;
+    }
+
+    .stat {
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid #ddd7ef;
+        border-radius: 16px;
+        padding: 12px;
+        text-align: center;
+        box-shadow: 0 5px 18px #4b386512;
+    }
+
+    .stat strong {
+        display: block;
+        font-size: 1.35rem;
+    }
+
+    .timer-warning {
+        color: #c03952;
+    }
+
+    .game {
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #ddd7ef;
+        border-radius: 24px;
+        padding: clamp(20px, 5vw, 42px);
+        box-shadow: 0 16px 45px #4b38651a;
+    }
+
+    .progress {
+        height: 10px;
+        background: #eeeaf8;
+        border-radius: 99px;
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .progress > div {
+        height: 100%;
+        width: 0;
+        background: #7657e8;
+        transition: 0.3s;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 7px 12px;
+        border-radius: 99px;
+        font-weight: 800;
+        font-size: 0.85rem;
+        color: white;
+    }
+
+    .badge.master {
+        background: #123b6d;
+    }
+
+    .badge.impossible {
+        background: #d62839;
+    }
+
+    .badge.omnipotent {
+        background: #000000;
+    }
+
+    .badge.extreme {
+        background: #f28c28;
+    }
+
+    .badge.genius {
+        background: #7b2cbf;
+    }
+
+    .badge.advanced {
+        background: #4361ee;
+    }
+
+    .badge.medium {
+        background: #2a9d8f;
+    }
+
+    .badge.easy {
+        background: #2f9e44;
+    }
+
+    .badge.professional {
+        background: #d62839;
+    }
+
+    .prompt {
+        text-align: center;
+        margin: 22px 0;
+    }
+
+    .prompt h2 {
+        font-size: clamp(1.4rem, 4vw, 2.1rem);
+        margin: 8px 0;
+    }
+
+    .prompt p {
+        color: #706b7f;
+        min-height: 24px;
+    }
+
+    .input-row {
+        display: flex;
+        gap: 10px;
+        max-width: 680px;
+        margin: 0 auto;
+    }
+
+    input {
+        flex: 1;
+        min-width: 0;
+        border: 2px solid #d9d3eb;
+        border-radius: 14px;
+        padding: 15px 17px;
+        font-size: 1.15rem;
+        outline: none;
+    }
+
+    input:focus {
+        border-color: #7657e8;
+        box-shadow: 0 0 0 4px #7657e822;
+    }
+
+    button {
+        border: 0;
+        border-radius: 14px;
+        padding: 13px 18px;
+        font-weight: 800;
+        cursor: pointer;
+        background: #7657e8;
+        color: white;
+        font-size: 1rem;
+        transition: transform 0.1s, opacity 0.2s;
+    }
+
+    button:hover {
+        transform: translateY(-1px);
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .secondary {
+        background: #eeeaf8;
+        color: #443b62;
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 9px;
+        margin-top: 15px;
+    }
+
+    .feedback {
+        min-height: 52px;
+        text-align: center;
+        margin-top: 18px;
+        font-weight: 800;
+        font-size: 1.05rem;
+    }
+
+    .correct {
+        color: #18824a;
+    }
+
+    .wrong {
+        color: #c03952;
+    }
+
+    .hint {
+        color: #6a6380;
+        font-weight: 600;
+    }
+
+    .definition {
+        max-width: 650px;
+        margin: 12px auto 0;
+        text-align: center;
+        color: #625c73;
+        line-height: 1.5;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .modal {
+        text-align: center;
+    }
+
+    .final-score {
+        font-size: 3rem;
+        font-weight: 900;
+        margin: 10px;
+        color: #6047c5;
+    }
+
+    .tiny {
+        font-size: 0.85rem;
+        color: #7b7589;
+        text-align: center;
+        margin-top: 18px;
+    }
+
+    /* GAME MODE SELECTOR */
+
+    .mode-select {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid #ddd7ef;
+        border-radius: 24px;
+        padding: clamp(22px, 5vw, 42px);
+        box-shadow: 0 16px 45px #4b38651a;
+        text-align: center;
+    }
+
+    .mode-select h2 {
+        margin: 0 0 8px;
+        font-size: clamp(1.6rem, 5vw, 2.4rem);
+    }
+
+    .mode-select p {
+        margin: 0 auto 24px;
+        color: #706b7f;
+        max-width: 620px;
+    }
+
+    .mode-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        max-width: 720px;
+        margin: 0 auto;
+    }
+
+    .mode-button {
+        min-height: 82px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        border: 2px solid #e2ddf0;
+        background: white;
+        color: #2f2945;
+    }
+
+    .mode-button strong {
+        font-size: 1.1rem;
+    }
+
+    .mode-button small {
+        color: #77718a;
+        font-weight: 600;
+    }
+
+    .mode-button:hover {
+        border-color: #7657e8;
+        background: #faf8ff;
+    }
+
+    /* COLOR-CODED GAME MODE BUTTONS */
+
+    .mode-button.easy-mode {
+        border-color: #2f9e44;
+        background: #f2fbf4;
+    }
+
+    .mode-button.easy-mode strong {
+        color: #2f9e44;
+    }
+
+    .mode-button.easy-mode:hover {
+        border-color: #267a36;
+        background: #e8f7eb;
+    }
+
+    .mode-button.medium-mode {
+        border-color: #2a9d8f;
+        background: #f0fbf9;
+    }
+
+    .mode-button.medium-mode strong {
+        color: #2a9d8f;
+    }
+
+    .mode-button.medium-mode:hover {
+        border-color: #217a70;
+        background: #e5f7f4;
+    }
+
+    .mode-button.advanced-mode {
+        border-color: #4361ee;
+        background: #f2f5ff;
+    }
+
+    .mode-button.advanced-mode strong {
+        color: #4361ee;
+    }
+
+    .mode-button.advanced-mode:hover {
+        border-color: #344dcc;
+        background: #e9edff;
+    }
+
+    .mode-button.professional-mode {
+        border-color: #d62839;
+        background: #fff5f5;
+    }
+
+    .mode-button.professional-mode strong {
+        color: #d62839;
+    }
+
+    .mode-button.professional-mode:hover {
+        border-color: #b51f30;
+        background: #ffecee;
+    }
+
+    .mode-button.genius-mode {
+        border-color: #7b2cbf;
+        background: #faf3ff;
+    }
+
+    .mode-button.genius-mode strong {
+        color: #7b2cbf;
+    }
+
+    .mode-button.genius-mode:hover {
+        border-color: #62229a;
+        background: #f3e8ff;
+    }
+
+    .mode-button.master-mode {
+        border-color: #123b6d;
+        background: #f2f7fc;
+    }
+
+    .mode-button.master-mode strong {
+        color: #123b6d;
+    }
+
+    .mode-button.master-mode:hover {
+        border-color: #0d2b50;
+        background: #e8f1f9;
+    }
+
+    .mode-button.extreme-mode {
+        border-color: #f28c28;
+        background: #fff8ef;
+    }
+
+    .mode-button.extreme-mode strong {
+        color: #f28c28;
+    }
+
+    .mode-button.extreme-mode:hover {
+        border-color: #c96f16;
+        background: #fff0dd;
+    }
+
+    .mode-button.impossible-mode {
+        border-color: #d62839;
+        background: #fff5f5;
+    }
+
+    .mode-button.impossible-mode strong {
+        color: #d62839;
+    }
+
+    .mode-button.impossible-mode:hover {
+        border-color: #b51f30;
+        background: #ffecee;
+    }
+
+    .mode-button.omnipotent-mode {
+        border-color: #000000;
+        background: #f5f5f5;
+    }
+
+    .mode-button.omnipotent-mode strong {
+        color: #000000;
+    }
+
+    .mode-button.omnipotent-mode:hover {
+        border-color: #333333;
+        background: #ededed;
+    }
+
+    .mode-title {
+        text-align: center;
+        margin: 0 0 8px;
+        color: #6047c5;
+    }
+
+    @media (max-width: 600px) {
+        .mode-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .stats {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin: 18px 0;
-        }
-
-        .stat {
-            background: rgba(255, 255, 255, 0.82);
-            border: 1px solid #ddd7ef;
-            border-radius: 16px;
-            padding: 12px;
-            text-align: center;
-            box-shadow: 0 5px 18px #4b386512;
-        }
-
-        .stat strong {
-            display: block;
-            font-size: 1.35rem;
-        }
-
-        .timer-warning {
-            color: #c03952;
-        }
-
-        .game {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid #ddd7ef;
-            border-radius: 24px;
-            padding: clamp(20px, 5vw, 42px);
-            box-shadow: 0 16px 45px #4b38651a;
-        }
-
-        .progress {
-            height: 10px;
-            background: #eeeaf8;
-            border-radius: 99px;
-            overflow: hidden;
-            margin-bottom: 25px;
-        }
-
-        .progress > div {
-            height: 100%;
-            width: 0;
-            background: #7657e8;
-            transition: 0.3s;
-        }
-
-        /* Difficulty badges */
-
-        .badge {
-            display: inline-block;
-            padding: 7px 12px;
-            border-radius: 99px;
-            font-weight: 800;
-            font-size: 0.85rem;
-            color: white;
-        }
-
-        .badge.master {
-            background: #123b6d;
-        }
-
-        .badge.impossible {
-            background: #d62839;
-        }
-
-        .badge.omnipotent {
-            background: #000000;
-        }
-
-        .badge.extreme {
-            background: #f28c28;
-        }
-
-        .prompt {
-            text-align: center;
-            margin: 22px 0;
-        }
-
-        .prompt h2 {
-            font-size: clamp(1.4rem, 4vw, 2.1rem);
-            margin: 8px 0;
-        }
-
-        .prompt p {
-            color: #706b7f;
-            min-height: 24px;
+            grid-template-columns: repeat(2, 1fr);
         }
 
         .input-row {
-            display: flex;
-            gap: 10px;
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        input {
-            flex: 1;
-            min-width: 0;
-            border: 2px solid #d9d3eb;
-            border-radius: 14px;
-            padding: 15px 17px;
-            font-size: 1.15rem;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: #7657e8;
-            box-shadow: 0 0 0 4px #7657e822;
-        }
-
-        button {
-            border: 0;
-            border-radius: 14px;
-            padding: 13px 18px;
-            font-weight: 800;
-            cursor: pointer;
-            background: #7657e8;
-            color: white;
-            font-size: 1rem;
-            transition: transform 0.1s, opacity 0.2s;
-        }
-
-        button:hover {
-            transform: translateY(-1px);
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .secondary {
-            background: #eeeaf8;
-            color: #443b62;
-        }
-
-        .actions {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 9px;
-            margin-top: 15px;
-        }
-
-        .feedback {
-            min-height: 52px;
-            text-align: center;
-            margin-top: 18px;
-            font-weight: 800;
-            font-size: 1.05rem;
-        }
-
-        .correct {
-            color: #18824a;
-        }
-
-        .wrong {
-            color: #c03952;
-        }
-
-        .hint {
-            color: #6a6380;
-            font-weight: 600;
-        }
-
-        .definition {
-            max-width: 650px;
-            margin: 12px auto 0;
-            text-align: center;
-            color: #625c73;
-            line-height: 1.5;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .modal {
-            text-align: center;
-        }
-
-        .final-score {
-            font-size: 3rem;
-            font-weight: 900;
-            margin: 10px;
-            color: #6047c5;
-        }
-
-        .tiny {
-            font-size: 0.85rem;
-            color: #7b7589;
-            text-align: center;
-            margin-top: 18px;
-        }
-
-        /* GAME MODE SELECTOR */
-        .mode-select {
-            background: rgba(255, 255, 255, 0.92);
-            border: 1px solid #ddd7ef;
-            border-radius: 24px;
-            padding: clamp(22px, 5vw, 42px);
-            box-shadow: 0 16px 45px #4b38651a;
-            text-align: center;
-        }
-        .mode-select h2 { margin: 0 0 8px; font-size: clamp(1.6rem, 5vw, 2.4rem); }
-        .mode-select p { margin: 0 auto 24px; color: #706b7f; max-width: 620px; }
-        .mode-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            max-width: 720px;
-            margin: 0 auto;
-        }
-        .mode-button {
-            min-height: 82px;
-            padding: 16px;
-            display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            border: 2px solid #e2ddf0;
-            background: white;
-            color: #2f2945;
         }
-        .mode-button strong { font-size: 1.1rem; }
-        .mode-button small { color: #77718a; font-weight: 600; }
-        .mode-button:hover { border-color: #7657e8; background: #faf8ff; }
-        .badge.genius { background: #7b2cbf; }
-        .badge.advanced { background: #4361ee; }
-        .badge.medium { background: #2a9d8f; }
-        .badge.easy { background: #2f9e44; }
-        .mode-title { text-align: center; margin: 0 0 8px; color: #6047c5; }
+    }
+</style>
+```
 
-        @media (max-width: 600px) {
-            .mode-grid { grid-template-columns: 1fr; }
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .input-row {
-                flex-direction: column;
-            }
-        }
-    </style>
 </head>
-
 
 <body>
 
 <div class="app">
 
-    <header>
+```
+<header>
+    <h1>Max's Spelling Bee</h1>
 
-        <h1>Max's Spelling Bee</h1>
+    <p class="subtitle">
+        <span id="subtitleTotal">0</span>
+        words.
+    </p>
+</header>
 
-        <p class="subtitle">
-            <span id="subtitleTotal">0</span>
-            words. Choose a game mode to begin!
+
+<!-- STATS -->
+
+<div class="stats">
+
+    <div class="stat">
+        <span>Score</span>
+        <strong id="score">0</strong>
+    </div>
+
+    <div class="stat">
+        <span>Streak</span>
+        <strong id="streak">0</strong>
+    </div>
+
+    <div class="stat">
+        <span>Correct</span>
+        <strong id="correct">0</strong>
+    </div>
+
+    <div class="stat">
+        <span>Question</span>
+        <strong>
+            <span id="current">0</span>/<span id="totalDisplay">0</span>
+        </strong>
+    </div>
+
+    <div class="stat">
+        <span>Time</span>
+        <strong id="timer">0:00</strong>
+    </div>
+
+    <div class="stat">
+        <span>WPM</span>
+        <strong id="wpm">0</strong>
+    </div>
+
+</div>
+
+
+<!-- GAME MODE SELECTOR -->
+
+<main class="mode-select" id="modeSelect">
+
+    <h2>Choose Your Game Mode</h2>
+
+    <p>
+        Pick a vocabulary set. Your choice determines which words you will get.
+    </p>
+
+    <div class="mode-grid">
+
+        <!-- ROW 1: EASY / MEDIUM -->
+
+        <button type="button" class="mode-button easy-mode" data-mode="easy">
+            <strong>🟢 Easy</strong>
+            <small>Everyday vocabulary</small>
+        </button>
+
+        <button type="button" class="mode-button medium-mode" data-mode="medium">
+            <strong>🔵 Medium</strong>
+            <small>School &amp; general vocabulary</small>
+        </button>
+
+
+        <!-- ROW 2: ADVANCED / PROFESSIONAL -->
+
+        <button type="button" class="mode-button advanced-mode" data-mode="advanced">
+            <strong>🟣 Advanced</strong>
+            <small>Challenging vocabulary</small>
+        </button>
+
+        <button type="button" class="mode-button professional-mode" data-mode="professional">
+            <strong>🔴 Professional</strong>
+            <small>Spelling-bee-style vocabulary</small>
+        </button>
+
+
+        <!-- ROW 3: GENIUS / MASTER -->
+
+        <button type="button" class="mode-button genius-mode" data-mode="genius">
+            <strong>🧠 Genius</strong>
+            <small>Expert-level vocabulary</small>
+        </button>
+
+        <button type="button" class="mode-button master-mode" data-mode="master">
+            <strong>🏆 Master</strong>
+            <small>Original Master words</small>
+        </button>
+
+
+        <!-- ROW 4: EXTREME / IMPOSSIBLE -->
+
+        <button type="button" class="mode-button extreme-mode" data-mode="extreme">
+            <strong>🔥 Extreme</strong>
+            <small>Original Extreme words</small>
+        </button>
+
+        <button type="button" class="mode-button impossible-mode" data-mode="impossible">
+            <strong>💀 Impossible</strong>
+            <small>Original Impossible words</small>
+        </button>
+
+
+        <!-- ROW 5: OMNIPOTENT -->
+
+        <button type="button" class="mode-button omnipotent-mode" data-mode="omnipotent">
+            <strong>👑 Omnipotent</strong>
+            <small>Original Omnipotent words</small>
+        </button>
+
+    </div>
+
+</main>
+
+
+<!-- GAME -->
+
+<main class="game hidden" id="game">
+
+    <div class="progress">
+        <div id="bar"></div>
+    </div>
+
+    <div style="text-align: center;">
+
+        <p class="mode-title" id="modeTitle">
+            Game Mode
         </p>
 
-    </header>
+        <span class="badge" id="difficulty">
+            HARD
+        </span>
+
+    </div>
+
+    <section class="prompt">
+
+        <h2>
+            Listen to the word, then spell it.
+        </h2>
+
+        <p id="definition">
+            Press 🔊 Hear Word to hear the pronunciation.
+        </p>
+
+    </section>
 
 
-    <!-- =========================
-         STATS
-         ========================= -->
+    <!-- ANSWER INPUT -->
 
-    <div class="stats">
+    <div class="input-row">
 
-        <div class="stat">
-            <span>Score</span>
-            <strong id="score">0</strong>
-        </div>
+        <input
+            id="answer"
+            type="text"
+            autocomplete="off"
+            autocapitalize="none"
+            spellcheck="false"
+            placeholder="Type the spelling here…"
+        >
 
-        <div class="stat">
-            <span>Streak</span>
-            <strong id="streak">0</strong>
-        </div>
-
-        <div class="stat">
-            <span>Correct</span>
-            <strong id="correct">0</strong>
-        </div>
-
-        <div class="stat">
-            <span>Question</span>
-
-            <strong>
-                <span id="current">0</span>/<span id="totalDisplay">0</span>
-            </strong>
-
-        </div>
-
-        <div class="stat">
-            <span>Time</span>
-            <strong id="timer">0:00</strong>
-        </div>
+        <button id="submit">
+            Submit
+        </button>
 
     </div>
 
 
-    <!-- GAME MODE SELECTOR -->
-    <main class="mode-select" id="modeSelect">
-        <h2>Choose Your Game Mode</h2>
-        <p>Pick a vocabulary set. Your choice determines which words you will get.</p>
-        <div class="mode-grid">
-            <button type="button" class="mode-button easy-mode" data-mode="easy"><strong>🟢 Easy</strong><small>Everyday vocabulary</small></button>
-            <button type="button" class="mode-button medium-mode" data-mode="medium"><strong>🔵 Medium</strong><small>School &amp; general vocabulary</small></button>
-            <button type="button" class="mode-button advanced-mode" data-mode="advanced"><strong>🟣 Advanced</strong><small>Challenging vocabulary</small></button>
-            <button type="button" class="mode-button genius-mode" data-mode="genius"><strong>🧠 Genius</strong><small>Expert-level vocabulary</small></button>
-            <button type="button" class="mode-button master-mode" data-mode="master"><strong>🏆 Master</strong><small>Original Master words</small></button>
-            <button type="button" class="mode-button extreme-mode" data-mode="extreme"><strong>🔥 Extreme</strong><small>Original Extreme words</small></button>
-            <button type="button" class="mode-button impossible-mode" data-mode="impossible"><strong>💀 Impossible</strong><small>Original Impossible words</small></button>
-            <button type="button" class="mode-button omnipotent-mode" data-mode="omnipotent"><strong>👑 Omnipotent</strong><small>Original Omnipotent words</small></button>
-        </div>
-    </main>
+    <!-- ACTION BUTTONS -->
 
-    <!-- =========================
-         GAME
-         ========================= -->
+    <div class="actions">
 
-    <main class="game" id="game">
-
-        <div class="progress">
-            <div id="bar"></div>
-        </div>
-
-
-        <div style="text-align: center;">
-            <p class="mode-title" id="modeTitle">Game Mode</p>
-
-            <span class="badge" id="difficulty">
-                HARD
-            </span>
-
-        </div>
-
-
-        <section class="prompt">
-
-            <h2>
-                Listen to the word, then spell it.
-            </h2>
-
-            <p id="definition">
-                Press 🔊 Hear Word to hear the pronunciation.
-            </p>
-
-        </section>
-
-
-        <!-- ANSWER INPUT -->
-
-        <div class="input-row">
-
-            <input
-                id="answer"
-                type="text"
-                autocomplete="off"
-                autocapitalize="none"
-                spellcheck="false"
-                placeholder="Type the spelling here…"
-            >
-
-            <button id="submit">
-                Submit
-            </button>
-
-        </div>
-
-
-        <!-- ACTION BUTTONS -->
-
-        <div class="actions">
-
-            <button
-                class="secondary"
-                id="speak"
-            >
-                🔊 Hear Word
-            </button>
-
-            <button
-                class="secondary"
-                id="hintBtn"
-            >
-                💡 Hint
-            </button>
-
-            <button
-                class="secondary"
-                id="skip"
-            >
-                Skip
-            </button>
-
-        </div>
-
-
-        <!-- FEEDBACK -->
-
-        <div
-            class="feedback"
-            id="feedback"
-        ></div>
-
-
-        <div
-            class="definition hidden"
-            id="meaning"
-        ></div>
-
-
-        <!-- NEXT WORD -->
-
-        <div
-            class="actions hidden"
-            id="nextWrap"
-        >
-
-            <button id="next">
-                Next Word →
-            </button>
-
-        </div>
-
-
-        <p class="tiny">
-            Tip: You get more points for longer words and maintaining a streak.
-        </p>
-
-    </main>
-
-
-    <!-- =========================
-         RESULTS
-         ========================= -->
-
-    <main
-        class="game modal hidden"
-        id="results"
-    >
-
-        <div style="font-size: 4rem;">
-            🏆
-        </div>
-
-        <h2>
-            Bee complete!
-        </h2>
-
-        <div
-            class="final-score"
-            id="finalScore"
-        >
-            0
-        </div>
-
-        <p id="finalText"></p>
-
-        <button id="restart">
-            Play Again
+        <button class="secondary" id="speak">
+            🔊 Replay Word
         </button>
 
-    </main>
+        <button class="secondary" id="hintBtn">
+            💡 Hint
+        </button>
+
+        <button class="secondary" id="skip">
+            Skip
+        </button>
+
+    </div>
+
+
+    <!-- FEEDBACK -->
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="definition hidden" id="meaning"></div>
+
+
+    <!-- NEXT WORD -->
+
+    <div class="actions hidden" id="nextWrap">
+
+        <button id="next">
+            Next Word →
+        </button>
+
+    </div>
+
+    <p class="tiny">
+        Tip: You get more points for longer words and maintaining a streak.
+    </p>
+
+</main>
+
+
+<!-- RESULTS -->
+
+<main class="game modal hidden" id="results">
+
+    <div style="font-size: 4rem;">
+        🏆
+    </div>
+
+    <h2>
+        Bee complete!
+    </h2>
+
+    <div class="final-score" id="finalScore">
+        0
+    </div>
+
+    <p id="finalText"></p>
+
+    <button id="restart">
+        Play Again
+    </button>
+
+</main>
+```
 
 </div>
-
 
 <script>
 
@@ -528,182 +735,25 @@
    SHORTCUT FUNCTION
    ========================================= */
 
-/*
-    IMPORTANT:
-    This must come BEFORE we use $("something").
-*/
-
 const $ = (id) => document.getElementById(id);
-
-
-/* =========================================
-   WORD LIST
-   ========================================= */
-
-const legacyWords = [
-
-    [
-        "Lopadotemachoselachogaleokranioleipsanodrimhypotrimmatosilphiokarabomelitokatakechymenokichlepikossyphophattoperisteralektryonoptekephalliokigklopeleiolagoiosiraiobaphetraganopterygon",
-        "[Noun] Definition: A fictional Greek food dish",
-        "OMNIPOTENT"
-    ],
-
-    [
-        "Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch",
-        "[Noun] A village in the island of Anglesey Wales",
-        "Extreme"
-    ], ["Osseocarnisanguineoviscericartilaginonervomedullary", "[Noun] Definition: The medical term for the human anthropomorphic system.", "Extreme"],
-
-    [
-        "Bccccscscscscscscscscscscsddzdzsffgggygygygygygygygygyjjjkkkskszkszkvllllvlylylylylylynynynynynynypprrrsssszszszszsztttytytytyvvzzszszszsillion",
-        "[Noun] Definition: A large googology number.",
-        "Impossible"
-    ],
-
-    [
-        "Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu",
-        "[Noun] Definition: A place in New Zealand known for having the longest name in the world.",
-        "Extreme"
-    ],
-
-    [
-        "Enneamegachronenneamyriaenneachiliaenneahectaenneacontakaienneagon",
-        "[Noun] Definition: A regular polygon with 999,999 sides.",
-        "Extreme"
-    ],
-
-    [
-        "Bababadalgharaghtakamminarronnkonnbronntonnerronntuonnthunntrovarrhounawnskawntoohoohoordenenthurnuk",
-        "[Adj]. Definition: Represents the symbolic thunderclap of Adam and Eve",
-        "Impossible"
-    ],
-
-    [
-        "Perkodhuskurunbarggruauyagokgorlayorgromgremmitghundhurthrumathunaradidillifaititillibumullunukkunun",
-        "[Adj] Definition: Describes the global thunder roots",
-        "Impossible"
-    ],
-
-    [
-        "Klikkaklakkaklaskaklopatzklatschabattacreppycrottygraddaghsemmihsammihnouithappluddyappladdypkonpkot",
-        "[Adj] Definition: Describes the sound of applause",
-        "Impossible"
-    ],
-
-    [
-        "Bladyughfoulmoecklenburgwhurawhorascortastrumpapornanennykocksapastippatappatupperstrippuckputtanach",
-        "No definition available.",
-        "Impossible"
-    ],
-
-    [
-        "Xavlegbmaofffassssitimiwoamndutroabcwapwaeiippohfffx",
-        "[Noun] Definition: The name of a band in Africa.",
-        "Master"
-    ],
-
-    [
-        "Paragyratediminishedrhombicosidodecahedron",
-        "[Noun] Definition: A convex shape with its pentagonal sides rotated 36 degrees.",
-        "Master"
-    ],
-
-    [
-        "Omnitruncatedicosidodecahedronprism",
-        "[Noun] Definition: An extruded 3 dimensional shape into 4 dimensions",
-        "Master"
-    ],
-
-    [
-        "Gagliodigamonisesquallientaphantomillioestrophixathqqilliogonticemptchimchageelabdojejveillion",
-        "[Noun] Definition: A large Googology number.",
-        "Impossible"
-    ],
-
-    [
-        "Aequeosalinocalcalinoceraceoaluminosocupreovitriolic",
-        "[Adj] Definition: Describes the chemical compounds in the bath water of a spa.",
-        "Master"
-    ],
-
-    [
-        "Kindercarnavalsoptochtvoorbereidingswerkzaamhedencommissieleden",
-        "[Verb] Definition: An English translation of the Dutch word that means members of the committee for preparatory activities for a children's carnival procession.",
-        "Master"
-    ],
-
-    [
-        "Thingcrooklyexineverypasturesixdixlikencehimaroundhersthemaggerbykinkinkankanwithdownmindlookingated",
-        "[Adj] Definition: A string of words made to mock the babble of gossip.",
-        "Impossible"
-    ],
-
-    [
-        "Lukkedoerendunandurraskewdylooshoofermoyportertooryzooysphalnabortansporthaokansakroidverjkapakkapuk",
-        "[Verb] Definition: A bundle of phrases meaning shut the door.",
-        "Impossible"
-    ],
-
-    [
-        "Bothallchoractorschumminaroundgansumuminarumdrumstrumtruminahumptadumpwaultopoofoolooderamaunsturnup",
-        "[Adj] Definition: Describes the fall of Humpty Dumpty.",
-        "Impossible"
-    ], ["Octamegachronoctamyriaoctachiliaoctahectaoctacontakaioctagon", "[Noun] Definition: A polygon with 8888888 sides.", "Extreme"],
-
-    [
-        "Pappappapparrassannuaragheallachnatullaghmonganmacmacmacwhackfalltherdebblenonthedubblandaddydoodled",
-        "[Adj] Definition: Describes the static sound on a broadcast indicating a war.",
-        "Impossible"
-    ],
-
-    [
-        "Enneacosienneacontakaienneasextilligakisenneacosienneacontakaienneaquintilligakisenneacosienneacontakaienneaquadrilligakisenneacosienneacontakaienneatrilligakisenneacosienneacontakaienneagigakisenneacosienneacontakaienneamegakisenneacosienneacontakaienneachiliakisenneacosienneacontakaienneagon",
-        "[Noun] Definition: A shape with 999 sextillion sides.",
-        "OMNIPOTENT"
-    ],
-
-    [
-        "Husstenhasstencaffincoffintussemtossemdamandamnacosaghcusaghhobixhatouxpeswchbechoscashlcarcarcaract",
-        "[Adj] Definition: Describes a cough.",
-        "Impossible"
-    ],
-
-    [
-        "Ullhodturdenweirmudgaardgringnirurdrmolnirfenrirlukkilokkibaugimandodrrerinsurtkrinmgernrackinarockar",
-        "[Adj] Definition: The description of Norse gods going on an angry rumble of destruction.",
-        "Impossible"
-    ], ["Triacosiatricontatetramegapentacosiaoctacontanoneakilohexacosiaheptacontagon", "[Noun] Definition: A 334589670 sided polygon", "Master"],
-
-    ["Tetracontaoctopentacosiotetracontapenteheptacosiotriacontasexphobia","[Noun] Definition: The fear of the number 48547636.", "Extreme"],
-
-    [
-        "Triseseososeseososeseososeseososeseososeseososeseososeseos",
-        "A fictional linguistically created word that has no inherent meaning.",
-        "Extreme"
-    ]
-
-];
 
 
 /* =========================================
    GAME MODE VOCABULARY
    ========================================= */
 
-/* Original words stay in their original difficulty category.
-   A Master word goes into Master, an Extreme word into Extreme,
-   an Impossible word into Impossible, and an Omnipotent word into
-   Omnipotent. */
-
 const modeWords = {
 
-    // =========================
-    // EASY MODE
-    // =========================
+    /* =========================
+       EASY MODE
+       ========================= */
+
     easy: [
         ["accomplish", "[Verb] To successfully complete something.", "Easy"],
         ["fortunate", "[Adjective] Having good luck or positive circumstances.", "Easy"],
         ["generous", "[Adjective] Willing to give or share freely.", "Easy"],
         ["necessary", "[Adjective] Needed or required.", "Easy"],
+        ["Gentleness", "[Noun] The state of being gentle.", "Easy"],
         ["separate", "[Adjective/Verb] Apart; or to divide things.", "Easy"],
         ["calendar", "[Noun] A system for organizing days, weeks, and months.", "Easy"],
         ["beautiful", "[Adjective] Pleasing to the senses or mind.", "Easy"],
@@ -712,121 +762,200 @@ const modeWords = {
         ["experience", "[Noun] Knowledge gained by doing or observing something.", "Easy"]
     ],
 
-    // =========================
-    // MEDIUM MODE
-    // =========================
+
+    /* =========================
+       MEDIUM MODE
+       ========================= */
+
     medium: [
         ["conscientious", "[Adjective] Careful, responsible, and attentive to detail.", "Medium"],
         ["ambiguous", "[Adjective] Open to more than one interpretation.", "Medium"],
         ["exaggerate", "[Verb] To represent something as larger or more important than it is.", "Medium"],
         ["perseverance", "[Noun] Continued effort despite difficulty.", "Medium"],
+        ["conundrum", "[Noun] A confusing, difficult puzzle.", "Medium"],
+        ["Rhythm", "[Noun] The beat of a song.", "Medium"],
+        ["Minuscule", "[Adjective] A tiny object.", "Medium"],
+        ["Conscience", "[Noun] The state of being alert or aware.", "Medium"],
+        ["Prestidigitation", "[Noun] The action of doing a magic trick.", "Medium"],
+        ["meticulous", "[Adjective] Extremely careful and precise.", "Medium"],
         ["miscellaneous", "[Adjective] Made up of various different kinds.", "Medium"],
         ["sophisticated", "[Adjective] Highly developed, refined, or complex.", "Medium"],
         ["entrepreneur", "[Noun] A person who starts and runs a business.", "Medium"],
         ["pronunciation", "[Noun] The way a word is spoken.", "Medium"],
+        ["Mischievous", "[Adjective] Causing harmless trouble or mild annoyance.", "Medium"],
         ["inconvenient", "[Adjective] Causing trouble or difficulty.", "Medium"],
         ["questionnaire", "[Noun] A set of questions used to collect information.", "Medium"]
     ],
 
-    // =========================
-    // ADVANCED MODE
-    // =========================
+
+    /* =========================
+       ADVANCED MODE
+       ========================= */
+
     advanced: [
-        ["idiosyncratic", "[Adjective] Characteristic of a particular person or thing.", "Advanced"],
-        ["meticulous", "[Adjective] Extremely careful and precise.", "Advanced"],
-        ["juxtaposition", "[Noun] The placement of contrasting things close together.", "Advanced"],
-        ["ubiquitous", "[Adjective] Present or found everywhere.", "Advanced"],
-        ["magnanimous", "[Adjective] Generous and forgiving, especially toward a rival.", "Advanced"],
-        ["sesquipedalian", "[Adjective] Characterized by the use of long words.", "Advanced"],
-        ["circumlocution", "[Noun] An indirect or unnecessarily wordy way of speaking.", "Advanced"],
-        ["ephemeral", "[Adjective] Lasting for a very short time.", "Advanced"],
-        ["belligerent", "[Adjective] Hostile and aggressive.", "Advanced"],
-        ["perspicacious", "[Adjective] Having a ready insight into things.", "Advanced"]
+        ["Idiosyncratic", "[Adjective] Characteristic of a particular person or thing.", "Advanced"],
+        ["Juxtaposition", "[Noun] The placement of contrasting things close together.", "Advanced"],
+        ["Ubiquitous", "[Adjective] Present or found everywhere.", "Advanced"], 
+        ["Bilberry", "A type of berry used in Swedish jams.", "Advanced"],
+        ["Susurration", "[Noun] The sound of whispering or murmuring.", "Advanced"],
+        ["Ovoviviparous", "[Adjective] Produces and hatches eggs inside of the body.", "Advanced"],
+        ["Acrimonious", "[Adjective] The state of being bitter and angry during a debate.", "Advanced"],
+        ["Bougainvillea", "[Noun] A tropical vine with brightly colored flowers.", "Advanced"],
+        ["Borborygmus", "[Noun] Describes the sound of gurgling intestines.", "Advanced"],
+        ["Convolvulaceous", "[Adjective] Relating to a type of flower family.", "Advanced"],
+        ["Magnanimous", "[Adjective] Generous and forgiving, especially toward a rival.", "Advanced"], ["Obsequious", "[Adjective] Excessively obedient, servile, or attentive to an extreme degree.", "Advanced"],
+        ["Ephemeral", "[Adjective] Lasting for a very short time.", "Advanced"],
+        ["Indefatigable", "[Adjective] Tireless, persistent, or never worn out.", "Advanced"],
+        ["Perspicacious", "[Adjective] Having a ready insight into things.", "Advanced"]
+    ], 
+     
+     
+     professional: [
+        ["Acquiescence", "[Noun] Passive acceptance or agreement without protest.", "Professional"],
+        ["Asteraceae", "[Noun] A type of flowering plant family.", "Professional"],
+        ["Defenestration", "[Noun] The act of throwing someone or something out of a window.", "Professional"],
+        ["Floccose", "[Adjective] Covered with soft, woolly tufts or fibers.", "Professional"],
+        ["Incunabula", "[Noun] Books printed before the middle of the sixteenth century.", "Professional"],
+        ["Legerdemain", "[Noun] Skillful use of one's hands to perform tricks or deceive.", "Professional"],
+        ["Mellifluous", "[Adjective] Pleasantly smooth and musical to hear.", "Professional"],
+        ["Quetzalcoatlus", "[Noun] A pterosaur with an exceptionally long wingspan.", "Professional"],
+        ["Zyzzyva", "[Noun] A genus of South American weevils.", "Professional"],
+        ["Autochthonous", "[Adjective] Originating or native to the specific place where it is found.", "Professional"],
+        ["Perspicacity", "[Noun] A sharpness of insight or discernment.", "Professional"],
+        ["Onomatopoeia", "[Noun] A word that phonetically resembles the thing being described.", "Professional"],
+        ["Synecdoche", "[Noun] A figure of speech in which a part represents the whole or vice versa.", "Professional"],
+        ["Vicissitude", "[Noun] A change of circumstances, especially an unwelcome one.", "Professional"],
+        ["Xenodochy", "[Noun] Hospitality shown to strangers or foreigners.", "Professional"],
+        ["Zymurgy", "[Noun] The study or practice of fermentation.", "Professional"],
+        ["Syzygy", "[Noun] An alignment of three celestial bodies.", "Professional"]
     ],
 
-    // =========================
-    // GENIUS MODE
-    // =========================
+
+    /* =========================
+       GENIUS MODE
+       EXACTLY 15 WORDS
+       ========================= */
+
     genius: [
-        ["pneumonoultramicroscopicsilicovolcanoconiosis", "[Noun] A famously long word referring to a lung disease caused by inhaling very fine silica dust.", "Genius"],
-        ["floccinaucinihilipilification", "[Noun] The act of describing something as worthless.", "Genius"],
-        ["antidisestablishmentarianism", "[Noun] Opposition to the withdrawal of state support from an established church.", "Genius"],
-        ["honorificabilitudinitatibus", "[Noun] A famously long word associated with the ability to achieve honors.", "Genius"],
-        ["psychopharmacological", "[Adjective] Relating to the effects of drugs on mood, behavior, or mental processes.", "Genius"],
-        ["electroencephalographically", "[Adverb] In a manner relating to recording electrical activity of the brain.", "Genius"],
-        ["otorhinolaryngological", "[Adjective] Relating to the medical specialty involving the ear, nose, and throat.", "Genius"],
-        ["counterrevolutionaries", "[Noun] People who oppose or act against a revolution.", "Genius"],
+        ["Pneumonoultramicroscopicsilicovolcanoconiosis", "[Noun] A famously long word referring to a lung disease caused by inhaling very fine silica dust.", "Genius"],
+        ["Floccinaucinihilipilification", "[Noun] The act of describing something as worthless.", "Genius"],
+        ["Antidisestablishmentarianism", "[Noun] Opposition to the withdrawal of state support from an established church.", "Genius"],
+        ["Honorificabilitudinitatibus", "[Noun] A famously long word associated with the ability to achieve honors.", "Genius"],
+        ["Psychopharmacological", "[Adjective] Relating to the effects of drugs on mood, behavior, or mental processes.", "Genius"],
+        ["Electroencephalographically", "[Adverb] In a manner relating to recording electrical activity of the brain.", "Genius"],
+        ["Otorhinolaryngological", "[Adjective] Relating to the medical specialty involving the ear, nose, and throat.", "Genius"],
+        ["Hippopotomonstrosesquippedaliophobia", "[Noun] The fear of long words.", "Genius"],
+        ["Keratoconjunctivitides", "[Noun] A medical term relating to different types of a gum ailment.", "Genius"],
+        ["Scaphotrapeziotrapezoid", "[Noun] A wrist connection involving three small bones.", "Genius"],
+        ["Quasichromatographically", "[Adverb] In a manner that resembles, approximates, or behaves similarly to chromatography.", "Genius"],
         ["Chargoggagoggmanchauggagoggchaubunagungamaugg", "[Noun] A lake in Webster, Massachusetts.", "Genius"],
-        ["Ethylenediaminetetraacetates", "[Noun] A chemical that pulls iron to itself and forms it in a ring shape.", "Genius"],
-        ["Laparohysterosalpingooophorectomy", "A surgical removal of the uterus.", "Genius"]
+        ["Phosphatidylethanolamine", "[Noun] A phospholipid that helps maintain the structure of cell membranes.", "Genius"],
+        ["Deinstitutionalization", "[Noun] The process of moving people from large institutions toward community-based care.", "Genius"]
     ],
 
-    // =========================
-    // MASTER MODE
-    // =========================
+
+    /* =========================
+       MASTER MODE
+       ========================= */
+
     master: [
         ["Xavlegbmaofffassssitimiwoamndutroabcwapwaeiippohfffx", "[Noun] Definition: The name of a band in Africa.", "Master"],
         ["Paragyratediminishedrhombicosidodecahedron", "[Noun] Definition: A convex shape with its pentagonal sides rotated 36 degrees.", "Master"],
-        ["Omnitruncatedicosidodecahedronprism", "[Noun] Definition: An extruded 3 dimensional shape into 4 dimensions", "Master"],
-        ["Aequeosalinocalcalinoceraceoaluminosocupreovitriolic", "[Adj] Definition: Describes the chemical compounds in the bath water of a spa.", "Master"],
+        ["Omnitruncatedicosidodecahedronprism", "[Noun] Definition: An extruded 3 dimensional shape into 4 dimensions.", "Master"], 
+        ["Gargantubehemothocolossogigantomassienormomegalograndilargeous", "[Adjective] A portmanteau meaning gigantic.", "Master"],
+        ["Hexamethylenetetramethylaminopentanedithiooxamide", "[Noun] A chemical that contains rubeanic acid and is used for the production of polymers.", "Master"],
+        ["Osseocarnisanguineoviscericartilaginonervomedullary", "[Noun] Definition: The medical term for the human anthropomorphic system.", "Master"],
+        ["Potassiumtrispentafluoroethyltrifluorophosphate", "[Noun] Definition: A complex anion used in the industrial creation of ionic liquids.", "Master"],
+        ["Aequeosalinocalcalinoceraceoaluminosocupreovitriolic", "[Adjective] Definition: Describes the chemical compounds in the bath water of a spa.", "Master"],
         ["Kindercarnavalsoptochtvoorbereidingswerkzaamhedencommissieleden", "[Verb] Definition: An English translation of the Dutch word that means members of the committee for preparatory activities for a children's carnival procession.", "Master"],
-        ["Triacosiatricontatetramegapentacosiaoctacontanoneakilohexacosiaheptacontagon", "[Noun] Definition: A 334589670 sided polygon", "Master"],
         ["Dodecahedraldischiliatriacosiatessaracontapentaprism", "[Noun] Definition: A dodecahedron extruded to the 2348th dimension.", "Master"],
-        ["Hepaticocholangiocholecystenterostomies", "[Verb] Definition: A surgery that connects the hepatic ducts and the gall bladder.", "Extreme"],
-        ["Oikodespotokrystallochrysoendodomopyrokatastrophophobia", "fear of a homeowner's glass and gold interior being destroyed by an indoor fire.", "Master"]
-    ],
+        ["Aerominisideromelanthermokafetrigeladodecacryoenaction", "[Verb] Definition: The enactment of the administration of the aerospace's iron black, decaf, red and extremely hot coffee machines and the extremely cold strawberry, chocolate and fig dodecahedral ice cream machine law.", "Master"],
+        ["Hepaticocholangiocholecystenterostomies", "[Verb] Definition: A surgery that connects the hepatic ducts and the gall bladder.", "Master"],
+        ["Chrysosiderocyanoadamantokrystallooryctopyrokyklopophilia", "[Noun] Definition: The love of mining massive amounts of gold, iron, lapis, diamonds and quartz while blowing fire rings.", "Master"],
+        ["Oikodespotokrystallochrysoendodomopyrokatastrophophobia", "[Noun] Definition: Fear of a homeowner's glass and gold interior being destroyed by an indoor fire.", "Master"]
+    ],   
 
-    // =========================
-    // EXTREME MODE
-    // =========================
+
+    /* =========================
+       EXTREME MODE
+       ========================= */
+
     extreme: [
-        ["Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch", "[Noun] A village in the island of Anglesey Wales", "Extreme"],
-        ["Osseocarnisanguineoviscericartilaginonervomedullary", "[Noun] Definition: The medical term for the human anthropomorphic system.", "Extreme"],
-        ["Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu", "[Noun] Definition: A place in New Zealand known for having the longest name in the world.", "Extreme"],
+        ["Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch", "[Noun] A village on the island of Anglesey, Wales.", "Extreme"],
+        ["Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu", "[Noun] Definition: A place in New Zealand known for having a very long name.", "Extreme"],
         ["Enneamegachronenneamyriaenneachiliaenneahectaenneacontakaienneagon", "[Noun] Definition: A regular polygon with 999,999 sides.", "Extreme"],
-        ["Octamegachronoctamyriaoctachiliaoctahectaoctacontakaioctagon", "[Noun] Definition: A polygon with 8888888 sides.", "Extreme"],
-        ["Tetracontaoctopentacosiotetracontapenteheptacosiotriacontasexphobia", "[Noun] Definition: The fear of the number 48547636.", "Extreme"],
-        ["Hexacosismyriahexacontamyriahexachiliahexacosiahexacontaxayotton", "[Noun] A 666666 dimensional shape.", "Extreme"],
+        ["Octamegachronoctamyriaoctachiliaoctahectaoctacontakaioctagon", "[Noun] Definition: A polygon with 8,888,888 sides.", "Extreme"],
+        ["Adenosinetriphosphatepolydeoxyribonucleotidenucleotidyltransferase", "[Noun] Definition: An enzyme that polymerizes DNA.", "Extreme"],
+        ["Triacosiatricontatetramegapentacosiaoctacontanoneakilohexacosiaheptacontagon", "[Noun] Definition: A 334589670-sided polygon.", "Extreme"],
+        ["Tetracontaoctopentacosiotetracontapenteheptacosiotriacontahexphobia", "[Noun] Definition: The fear of the number 48547636.", "Extreme"],
+        ["Hexacosismyriahexacontamyriahexachiliahexacosiahexacontaxayotton", "[Noun] A 666666-dimensional shape.", "Extreme"],
+        ["Tetranitroorthocarbonatebisdimethylaminomethylcyclohexanone", "[Noun] Definition: A complex chemical compound used for slimicides.", "Extreme"],
+        ["Hectavintiduogigadodecacihectadodecamillydodecacihectavintighedron", "[Noun] Definition: A 121212121121-sided three-dimensional shape.", "Extreme"],
         ["Triseseososeseososeseososeseososeseososeseososeseososeseos", "A fictional linguistically created word that has no inherent meaning.", "Extreme"],
-        ["Rindfleischetikettierungsuberwachungsaufgabenubertragungsgesetz", "[Noun] Definition: The beef labeling supervision duties delegation law."]
+        ["Rindfleischetikettierungsuberwachungsaufgabenubertragungsgesetz", "[Noun] Definition: The beef labeling supervision duties delegation law.", "Extreme"]
     ],
 
-    // =========================
-    // IMPOSSIBLE MODE
-    // =========================
+
+    /* =========================
+       IMPOSSIBLE MODE
+       ========================= */
+
     impossible: [
         ["Bccccscscscscscscscscscscsddzdzsffgggygygygygygygygygyjjjkkkskszkszkvllllvlylylylylylynynynynynynypprrrsssszszszszsztttytytytyvvzzszszszsillion", "[Noun] Definition: A large googology number.", "Impossible"],
-        ["Bababadalgharaghtakamminarronnkonnbronntonnerronntuonnthunntrovarrhounawnskawntoohoohoordenenthurnuk", "[Adj]. Definition: Represents the symbolic thunderclap of Adam and Eve", "Impossible"],
-        ["Perkodhuskurunbarggruauyagokgorlayorgromgremmitghundhurthrumathunaradidillifaititillibumullunukkunun", "[Adj] Definition: Describes the global thunder roots", "Impossible"],
-        ["Klikkaklakkaklaskaklopatzklatschabattacreppycrottygraddaghsemmihsammihnouithappluddyappladdypkonpkot", "[Adj] Definition: Describes the sound of applause", "Impossible"],
-        ["Bladyughfoulmoecklenburgwhurawhorascortastrumpapornanennykocksapastippatappatupperstrippuckputtanach", "No definition available.", "Impossible"],
-        ["Gagliodigamonisesquallientaphantomillioestrophixathqqilliogonticemptchimchageelabdojejveillion", "[Noun] Definition: A large Googology number.", "Impossible"],
-        ["Thingcrooklyexineverypasturesixdixlikencehimaroundhersthemaggerbykinkinkankanwithdownmindlookingated", "[Adj] Definition: A string of words made to mock the babble of gossip.", "Impossible"],
+        ["Bababadalgharaghtakamminarronnkonnbronntonnerronntuonnthunntrovarrhounawnskawntoohoohoordenenthurnuk", "[Adjective] Definition: Represents the symbolic thunderclap of Adam and Eve.", "Impossible"],
+        ["Perkodhuskurunbarggruauyagokgorlayorgromgremmitghundhurthrumathunaradidillifaititillibumullunukkunun", "[Adjective] Definition: Describes the global thunder roots.", "Impossible"],
+        ["Klikkaklakkaklaskaklopatzklatschabattacreppycrottygraddaghsemmihsammihnouithappluddyappladdypkonpkot", "[Adjective] Definition: Describes the sound of applause.", "Impossible"],
+        ["Ooooooooooooaaaaeaaiaujooooooooooooaaeoaauuaaeeeeeeeeeaaasdaeieaajoooooooooooeeeeoaaaaaaaa", "[Noun] Definition: The main chorus in the hit song, Brain Power.", "Impossible"],
+        ["Tweedehandsemotorverkoopsmannevakbondstakingsvergaderingsameroeperstoespraakskrywerspersverklaringuitreikingsmediakonferensieaankondiging", "[Noun] Definition: Issuable media conference's announcement at a press release regarding the convener's speech at a secondhand car dealership union's strike meeting.", "Impossible"],
+        ["Polyethyleneglycolterephtalatepolyurethanepolyvinylchloridepolytetrafluoroethylenepolystyreneisoprene", "[Noun] Definition: A chemical compound that consists of PVC, Teflon, and polystyrene.", "Impossible"],
+        ["Gagliodigamonisesquallientaphantomillioestrophixathqqilliogonticemptchimchageelabdojejveillion", "[Noun] Definition: A large Googology number.", "Impossible"], 
+        ["Pyrofuriocaniculascorchiblisterisearibakiroastiblazisizzliscaldincandesceredmoltesuperheatigneoflammous", "[Adjective] Definition: A portmanteau meaning extremely hot.", "Impossible"],
+        ["Phenylalanylalanylarginylserylisoleucylglycylhistidylthreonylglutamylaspartylleucyltyrosine", "[Noun] Definition: A long amino-acid sequence.", "Impossible"],
+        ["Thingcrooklyexineverypasturesixdixlikencehimaroundhersthemaggerbykinkinkankanwithdownmindlookingated", "[Adjective] Definition: A string of words made to mock the babble of gossip.", "Impossible"],
         ["Lukkedoerendunandurraskewdylooshoofermoyportertooryzooysphalnabortansporthaokansakroidverjkapakkapuk", "[Verb] Definition: A bundle of phrases meaning shut the door.", "Impossible"],
-        ["Bothallchoractorschumminaroundgansumuminarumdrumstrumtruminahumptadumpwaultopoofoolooderamaunsturnup", "[Adj] Definition: Describes the fall of Humpty Dumpty.", "Impossible"],
-        ["Pappappapparrassannuaragheallachnatullaghmonganmacmacmacwhackfalltherdebblenonthedubblandaddydoodled", "[Adj] Definition: Describes the static sound on a broadcast indicating a war.", "Impossible"],
-        ["Husstenhasstencaffincoffintussemtossemdamandamnacosaghcusaghhobixhatouxpeswchbechoscashlcarcarcaract", "[Adj] Definition: Describes a cough.", "Impossible"],
-        ["Ullhodturdenweirmudgaardgringnirurdrmolnirfenrirlukkilokkibaugimandodrrerinsurtkrinmgernrackinarockar", "[Adj] Definition: The description of Norse gods going on an angry rumble of destruction.", "Impossible"]
-    ],
+        ["Bothallchoractorschumminaroundgansumuminarumdrumstrumtruminahumptadumpwaultopoofoolooderamaunsturnup", "[Adjective] Definition: Describes the fall of Humpty Dumpty.", "Impossible"],
+        ["Pappappapparrassannuaragheallachnatullaghmonganmacmacmacwhackfalltherdebblenonthedubblandaddydoodled", "[Adjective] Definition: Describes the static sound on a broadcast indicating a war.", "Impossible"],
+        ["Husstenhasstencaffincoffintussemtossemdamandamnacosaghcusaghhobixhatouxpeswchbechoscashlcarcarcaract", "[Adjective] Definition: Describes a cough.", "Impossible"],
+        ["Ullhodturdenweirmudgaardgringnirurdrmolnirfenrirlukkilokkibaugimandodrrerinsurtkrinmgernrackinarockar", "[Adjective] Definition: The description of Norse gods going on an angry rumble of destruction.", "Impossible"]
+    ],   
 
-    // =========================
-    // OMNIPOTENT MODE
-    // =========================
+
+    /* =========================
+       PROFESSIONAL MODE
+       ========================= */
+
+    
+
+
+    /* =========================
+       OMNIPOTENT MODE
+       ========================= */
+
     omnipotent: [
-        ["Lopadotemachoselachogaleokranioleipsanodrimhypotrimmatosilphiokarabomelitokatakechymenokichlepikossyphophattoperisteralektryonoptekephalliokigklopeleiolagoiosiraiobaphetraganopterygon", "[Noun] Definition: A fictional Greek food dish", "Omnipotent"],
-        ["Heptacosisheptacontaheptachiliamyriamyriamyriamyriaheptacosisheptacontaheptachiliamyriamyriamyriaheptacosisheptacontaheptachiliamyriamyriaheptacosisheptacontaheptachiliamyriaheptacosisheptacontaheptatope", "[Noun] Definition: A 7777777777 dimensional square.", "Omnipotent"],
+        ["Lopadotemachoselachogaleokranioleipsanodrimhypotrimmatosilphiokarabomelitokatakechymenokichlepikossyphophattoperisteralektryonoptekephalliokigklopeleiolagoiosiraiobaphetraganopterygon", "[Noun] Definition: A fictional Greek food dish.", "Omnipotent"],
+        ["Heptacosisheptacontaheptachiliamyriamyriamyriamyriaheptacosisheptacontaheptachiliamyriamyriamyriaheptacosisheptacontaheptachiliamyriamyriaheptacosisheptacontaheptachiliamyriaheptacosisheptacontaheptatope", "[Noun] Definition: A square extruded to the 7777777777th dimension.", "Omnipotent"],
+    
         ["Enneacosienneacontakaienneasextilligakisenneacosienneacontakaienneaquintilligakisenneacosienneacontakaienneaquadrilligakisenneacosienneacontakaienneatrilligakisenneacosienneacontakaienneagigakisenneacosienneacontakaienneamegakisenneacosienneacontakaienneachiliakisenneacosienneacontakaienneagon", "[Noun] Definition: A shape with 999 sextillion sides.", "Omnipotent"]
     ]
 };
 
+
+/* =========================================
+   MODE NAMES
+   ========================================= */
+
 const modeNames = {
-    easy: "Easy", medium: "Medium", advanced: "Advanced", genius: "Genius",
-    master: "Master", extreme: "Extreme", impossible: "Impossible", omnipotent: "Omnipotent"
+    easy: "Easy",
+    medium: "Medium",
+    advanced: "Advanced",
+    genius: "Genius",
+    master: "Master",
+    extreme: "Extreme",
+    impossible: "Impossible",
+    omnipotent: "Omnipotent",
+    professional: "Professional"
 };
 
-function getModePool(mode) {
-    return modeWords[mode] || [];
-}
 
 /* =========================================
    GAME VARIABLES
@@ -845,9 +974,25 @@ let answered = false;
 
 let timeLeft = 0;
 let timerId = null;
+let wordStartTime = 0;
+let currentWpm = 0;
 
 let audioContext = null;
 let selectedMode = "easy";
+
+
+/* =========================================
+   GET MODE POOL
+   ========================================= */
+
+function getModePool(mode) {
+
+    if (!modeWords[mode]) {
+        return [];
+    }
+
+    return modeWords[mode].map(word => [...word]);
+}
 
 
 /* =========================================
@@ -855,21 +1000,30 @@ let selectedMode = "easy";
    ========================================= */
 
 function updateTotalDisplay() {
+
     $("totalDisplay").textContent = total;
     $("subtitleTotal").textContent = total;
 }
 
 
 /* =========================================
-   SHUFFLE
+   PROPER SHUFFLE
    ========================================= */
 
 function shuffle(array) {
 
-    return [...array].sort(
-        () => Math.random() - 0.5
-    );
+    const result = [...array];
 
+    for (let i = result.length - 1; i > 0; i--) {
+
+        const j =
+            Math.floor(Math.random() * (i + 1));
+
+        [result[i], result[j]] =
+            [result[j], result[i]];
+    }
+
+    return result;
 }
 
 
@@ -890,7 +1044,7 @@ function formatTime(seconds) {
 
 
 /* =========================================
-   SATISFYING TYPING CLICK
+   TYPING SOUND
    ========================================= */
 
 function playTypingClick() {
@@ -903,20 +1057,15 @@ function playTypingClick() {
                 window.AudioContext ||
                 window.webkitAudioContext
             )();
-
         }
 
         if (audioContext.state === "suspended") {
-
             audioContext.resume();
-
         }
 
         const now =
             audioContext.currentTime;
 
-
-        /* Main click */
 
         const osc =
             audioContext.createOscillator();
@@ -952,19 +1101,11 @@ function playTypingClick() {
         );
 
         osc.connect(gain);
-
-        gain.connect(
-            audioContext.destination
-        );
+        gain.connect(audioContext.destination);
 
         osc.start(now);
+        osc.stop(now + 0.05);
 
-        osc.stop(
-            now + 0.05
-        );
-
-
-        /* Small second click */
 
         const tick =
             audioContext.createOscillator();
@@ -1000,21 +1141,13 @@ function playTypingClick() {
         );
 
         tick.connect(tickGain);
-
-        tickGain.connect(
-            audioContext.destination
-        );
+        tickGain.connect(audioContext.destination);
 
         tick.start(now);
-
-        tick.stop(
-            now + 0.025
-        );
+        tick.stop(now + 0.025);
 
     } catch (error) {
-
         /* Sound is optional. */
-
     }
 }
 
@@ -1028,7 +1161,6 @@ function stopTimer() {
     if (timerId !== null) {
 
         clearInterval(timerId);
-
         timerId = null;
     }
 }
@@ -1045,7 +1177,7 @@ function updateTimer() {
 
     $("timer").classList.toggle(
         "timer-warning",
-        timeLeft <= 10
+        timeLeft <= 5
     );
 }
 
@@ -1061,19 +1193,10 @@ function startTimer() {
     const word =
         pool[index][0];
 
-
-    /*
-        Two seconds per letter.
-
-        If you want five seconds per letter,
-        change 2 to 5 below.
-    */
-
     timeLeft =
-        word.length * 2;
+        word.length * 1;
 
     updateTimer();
-
 
     timerId = setInterval(() => {
 
@@ -1081,10 +1204,9 @@ function startTimer() {
             return;
         }
 
-        timeLeft--;
+        timeLeft = Math.max(0, timeLeft - 1);
 
         updateTimer();
-
 
         if (timeLeft <= 0) {
 
@@ -1106,28 +1228,68 @@ function startTimer() {
 function start(mode = selectedMode) {
 
     selectedMode = mode;
-    const selectedWords = getModePool(selectedMode);
+
+    const selectedWords =
+        getModePool(selectedMode);
 
     if (!selectedWords.length) {
-        alert("That game mode does not have any words yet.");
+
+        alert(
+            "That game mode does not have any words yet."
+        );
+
         return;
     }
 
     pool = shuffle(selectedWords);
+
     total = pool.length;
+
+
+    if (
+        selectedMode === "genius" &&
+        total !== 15
+    ) {
+
+        console.error(
+            "Genius Mode should contain 15 words, but loaded:",
+            total
+        );
+
+        alert(
+            `Genius Mode error: ${total} words loaded instead of 15.`
+        );
+
+        return;
+    }
+
+
     index = 0;
+
     score = 0;
     streak = 0;
     correct = 0;
+
     stopTimer();
 
+
     $("modeSelect").classList.add("hidden");
+
     $("game").classList.remove("hidden");
+
     $("results").classList.add("hidden");
-    $("modeTitle").textContent = `${modeNames[selectedMode]} Mode`;
+
+
+    $("modeTitle").textContent =
+        `${modeNames[selectedMode]} Mode`;
+
+    $("modeTitle").className = "mode-title " + selectedMode + "-title";
+
 
     updateTotalDisplay();
+
     $("current").textContent = 1;
+
     loadWord();
 }
 
@@ -1143,6 +1305,13 @@ function loadWord() {
     answered = false;
 
     hintUsed = false;
+
+    wordStartTime =
+        performance.now();
+
+    currentWpm = 0;
+
+    $("wpm").textContent = "0";
 
 
     const [
@@ -1165,17 +1334,12 @@ function loadWord() {
         correct;
 
 
-    /* Difficulty */
-
     $("difficulty").textContent =
         diff.toUpperCase();
 
     $("difficulty").className =
-        "badge " +
-        diff.toLowerCase();
+        "badge " + diff.toLowerCase();
 
-
-    /* Input */
 
     $("answer").value = "";
 
@@ -1186,39 +1350,26 @@ function loadWord() {
     $("answer").dataset.previousLength = "0";
 
 
-    /* Feedback */
-
     $("feedback").textContent = "";
 
     $("feedback").className =
         "feedback";
 
 
-    /* Meaning */
+    $("meaning").classList.add("hidden");
 
-    $("meaning").classList.add(
-        "hidden"
-    );
+    $("meaning").textContent = "";
 
 
-    /* Next button */
+    $("nextWrap").classList.add("hidden");
 
-    $("nextWrap").classList.add(
-        "hidden"
-    );
-
-
-    /* Definition */
 
     $("definition").textContent =
-        "Press 🔊 Hear Word to hear the pronunciation.";
+        meaning;
 
-
-    /* Progress */
 
     $("bar").style.width =
-        (index / total * 100) +
-        "%";
+        (index / total * 100) + "%";
 
 
     startTimer();
@@ -1226,9 +1377,11 @@ function loadWord() {
 
     setTimeout(() => {
 
+        speak();
+
         $("answer").focus();
 
-    }, 50);
+    }, 100);
 }
 
 
@@ -1237,16 +1390,29 @@ function loadWord() {
    ========================================= */
 
 function speak() {
-    const word = pool[index][0];
+
+    if (
+        !pool.length ||
+        index >= pool.length
+    ) {
+        return;
+    }
+
+    const word =
+        pool[index][0];
 
     if ("speechSynthesis" in window) {
+
         speechSynthesis.cancel();
 
-        const utterance = new SpeechSynthesisUtterance(word);
+        const utterance =
+            new SpeechSynthesisUtterance(word);
 
         utterance.lang = "en-US";
+
         utterance.rate = 0.82;
-        utterance.pitch = 1;
+
+        utterance.pitch = 1.1;
 
         speechSynthesis.speak(utterance);
     }
@@ -1266,25 +1432,19 @@ function hint() {
         return;
     }
 
-
     hintUsed = true;
-
 
     const word =
         pool[index][0];
-
 
     const shown =
         word.slice(
             0,
             Math.max(
                 1,
-                Math.ceil(
-                    word.length * 0.18
-                )
+                Math.ceil(word.length * 0.18)
             )
         );
-
 
     $("feedback").innerHTML =
         `<span class="hint">
@@ -1312,26 +1472,34 @@ function check(
     const word =
         pool[index][0];
 
-    const meaning =
-        pool[index][1];
+
+    answered = true;
 
 
-    /*
-        IMPORTANT ANSWER FIX
+    const elapsedMinutes =
+        Math.max(
+            (performance.now() - wordStartTime) / 60000,
+            1 / 60000
+        );
 
-        trim() removes accidental spaces.
 
-        toLowerCase() means capitalization
-        does not matter.
+    const typedCharacters =
+        $("answer").value.trim().length;
 
-        Example:
 
-        HelloWorld
-        helloworld
-        HELLOWORLD
+    currentWpm =
+        Math.round(
+            (typedCharacters / 5) /
+            elapsedMinutes
+        );
 
-        are all considered the same answer.
-    */
+
+    $("wpm").textContent =
+        currentWpm;
+
+
+    stopTimer();
+
 
     const val =
         $("answer").value
@@ -1345,21 +1513,12 @@ function check(
             .toLowerCase();
 
 
-    answered = true;
+    $("answer").disabled = true;
 
-    stopTimer();
-
-
-    $("answer").disabled =
-        true;
-
-    $("submit").disabled =
-        true;
+    $("submit").disabled = true;
 
 
-    /* =====================================
-       CORRECT ANSWER
-       ===================================== */
+    /* CORRECT */
 
     if (
         !skip &&
@@ -1393,15 +1552,12 @@ function check(
             `✅ Correct! <b>${word}</b> is right. ` +
             `+${earnedPoints} points`;
 
-
         $("feedback").className =
             "feedback correct";
     }
 
 
-    /* =====================================
-       WRONG / SKIPPED / TIMEOUT
-       ===================================== */
+    /* WRONG / SKIPPED / TIMEOUT */
 
     else {
 
@@ -1413,7 +1569,6 @@ function check(
             $("feedback").innerHTML =
                 `⏰ Time's up! The correct spelling is ` +
                 `<b>${word}</b>.`;
-
         }
 
         else if (skip) {
@@ -1421,7 +1576,6 @@ function check(
             $("feedback").innerHTML =
                 `⏭️ Skipped. The word was ` +
                 `<b>${word}</b>.`;
-
         }
 
         else {
@@ -1437,41 +1591,18 @@ function check(
     }
 
 
-    /* =====================================
-       SHOW MEANING
-       ===================================== */
-
-    $("meaning").textContent =
-        "Meaning: " +
-        meaning;
-
-
-    $("meaning").classList.remove(
-        "hidden"
-    );
-
-
-    /* =====================================
-       SHOW NEXT BUTTON
-       ===================================== */
+    $("meaning").textContent = pool[index][1];
+    $("meaning").classList.remove("hidden");
 
     $("nextWrap").classList.remove(
         "hidden"
     );
 
 
-    /* =====================================
-       UPDATE PROGRESS
-       ===================================== */
-
     $("bar").style.width =
         ((index + 1) / total * 100) +
         "%";
 
-
-    /* =====================================
-       UPDATE STATS
-       ===================================== */
 
     $("score").textContent =
         score;
@@ -1549,7 +1680,6 @@ $("submit").onclick =
     () => {
 
         check(false);
-
     };
 
 
@@ -1557,7 +1687,6 @@ $("skip").onclick =
     () => {
 
         check(true);
-
     };
 
 
@@ -1576,10 +1705,7 @@ $("speak").onclick =
 $("next").onclick =
     () => {
 
-        index++;
-
-
-        if (index >= total) {
+        if (index >= total - 1) {
 
             finish();
 
@@ -1587,8 +1713,9 @@ $("next").onclick =
 
         else {
 
-            loadWord();
+            index++;
 
+            loadWord();
         }
     };
 
@@ -1604,7 +1731,6 @@ $("answer").addEventListener(
         if (event.key === "Enter") {
 
             check(false);
-
         }
     }
 );
@@ -1627,38 +1753,86 @@ $("answer").addEventListener(
                     window.webkitAudioContext
                 )();
 
-            }
-
-            catch (error) {
+            } catch (error) {
 
                 /* Audio unavailable. */
-
             }
         }
     }
 );
 
 
-/* GAME MODE BUTTONS */
-document.querySelectorAll(".mode-button").forEach(button => {
-    button.addEventListener("click", event => {
-        event.preventDefault();
-        const mode = button.dataset.mode;
-        if (mode && modeWords[mode] && modeWords[mode].length) {
-            start(mode);
-        }
+/* =========================================
+   GAME MODE BUTTONS
+   ========================================= */
+
+document
+    .querySelectorAll(".mode-button")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            event => {
+
+                event.preventDefault();
+
+                const mode =
+                    button.dataset.mode;
+
+                if (
+                    mode &&
+                    modeWords[mode] &&
+                    modeWords[mode].length
+                ) {
+
+                    start(mode);
+                }
+            }
+        );
     });
-});
+
 
 /* =========================================
    RESTART BUTTON
    ========================================= */
 
 $("restart").onclick = () => {
+
     stopTimer();
+
     $("results").classList.add("hidden");
+
     $("game").classList.add("hidden");
+
     $("modeSelect").classList.remove("hidden");
+
+    $("score").textContent = "0";
+
+    $("streak").textContent = "0";
+
+    $("correct").textContent = "0";
+
+    $("current").textContent = "0";
+
+    $("totalDisplay").textContent = "0";
+
+    $("subtitleTotal").textContent = "0";
+
+    $("timer").textContent = "0:00";
+
+    $("wpm").textContent = "0";
+
+    currentWpm = 0;
+
+    $("bar").style.width = "0%";
+    $("answer").value = "";
+    $("answer").disabled = false;
+    $("submit").disabled = false;
+    $("feedback").textContent = "";
+    $("feedback").className = "feedback";
+    $("meaning").textContent = "";
+    $("meaning").classList.add("hidden");
+    $("nextWrap").classList.add("hidden");
 };
 
 
@@ -1682,14 +1856,13 @@ function finish() {
 
 
     $("finalScore").textContent =
-        score +
-        " points";
+        score + " points";
 
 
     const pct =
-        Math.round(
-            correct / total * 100
-        );
+        total > 0
+            ? Math.round(correct / total * 100)
+            : 0;
 
 
     $("finalText").textContent =
@@ -1697,10 +1870,10 @@ function finish() {
         `words correctly (${pct}%). ` +
         (
             pct >= 90
-                ? "🐝 Incredible work!"
+                ? "Incredible work!"
                 : pct >= 70
-                    ? "🌟 Great job!"
-                    : "📚 Keep practicing—you'll get there!"
+                    ? "Great job!"
+                    : "📚 Keep practicing — you'll get there!"
         );
 }
 
@@ -1710,12 +1883,13 @@ function finish() {
    ========================================= */
 
 $("modeSelect").classList.remove("hidden");
+
 $("game").classList.add("hidden");
+
 $("results").classList.add("hidden");
 
 </script>
 
 </body>
 </html>
-
-```
+````
