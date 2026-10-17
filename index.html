@@ -18,13 +18,8 @@
         margin: 0;
         min-height: 100vh;
         font-family: system-ui, -apple-system, Segoe UI, sans-serif;
-        background: radial-gradient(
-            circle at top,
-            #fff7d6,
-            #f4ecff 45%,
-            #e8f4ff
-        );
-        color: #24213a;
+        background: radial-gradient(circle at top, #173f70, #0b2342 58%, #06172d);
+        color: #ffffff;
         display: flex;
         justify-content: center;
         padding: 24px;
@@ -47,7 +42,7 @@
 
     .subtitle {
         margin: 6px 0 0;
-        color: #68647a;
+        color: #d5e4f7;
     }
 
     .stats {
@@ -76,11 +71,12 @@
     }
 
     .game {
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid #ddd7ef;
+        background: linear-gradient(145deg, #123b6d, #0b2342 65%, #06172d);
+        color: #ffffff;
+        border: 1px solid #35577e;
         border-radius: 24px;
         padding: clamp(20px, 5vw, 42px);
-        box-shadow: 0 16px 45px #4b38651a;
+        box-shadow: 0 16px 45px #00000035;
     }
 
     .progress {
@@ -154,7 +150,7 @@
     }
 
     .prompt p {
-        color: #706b7f;
+        color: #d5e4f7;
         min-height: 24px;
     }
 
@@ -207,6 +203,20 @@
         color: #443b62;
     }
 
+    /* Dark green controls used during a spelling round */
+    #speak,
+    #hintBtn,
+    #skip {
+        background: #14532d;
+        color: #ffffff;
+    }
+
+    #speak:hover,
+    #hintBtn:hover,
+    #skip:hover {
+        background: #166534;
+    }
+
     .actions {
         display: flex;
         flex-wrap: wrap;
@@ -240,7 +250,7 @@
         max-width: 650px;
         margin: 12px auto 0;
         text-align: center;
-        color: #625c73;
+        color: #d5e4f7;
         line-height: 1.5;
     }
 
@@ -256,12 +266,12 @@
         font-size: 3rem;
         font-weight: 900;
         margin: 10px;
-        color: #6047c5;
+        color: #ffffff;
     }
 
     .tiny {
         font-size: 0.85rem;
-        color: #7b7589;
+        color: #c3d5eb;
         text-align: center;
         margin-top: 18px;
     }
@@ -269,8 +279,8 @@
     /* GAME MODE SELECTOR */
 
     .mode-select {
-        background: rgba(255, 255, 255, 0.92);
-        border: 1px solid #ddd7ef;
+        background: #000000;
+        border: 1px solid #34465d;
         border-radius: 24px;
         padding: clamp(22px, 5vw, 42px);
         box-shadow: 0 16px 45px #4b38651a;
@@ -278,13 +288,14 @@
     }
 
     .mode-select h2 {
+        color: #ffffff;
         margin: 0 0 8px;
         font-size: clamp(1.6rem, 5vw, 2.4rem);
     }
 
     .mode-select p {
         margin: 0 auto 24px;
-        color: #706b7f;
+        color: #d5deea;
         max-width: 620px;
     }
 
@@ -304,157 +315,41 @@
         align-items: center;
         justify-content: center;
         gap: 5px;
-        border: 2px solid #e2ddf0;
-        background: white;
-        color: #2f2945;
+        border: 2px solid transparent;
+        color: #ffffff;
     }
 
     .mode-button strong {
         font-size: 1.1rem;
+        color: #ffffff;
     }
 
     .mode-button small {
-        color: #77718a;
+        color: #ffffff;
         font-weight: 600;
+        opacity: 0.96;
     }
 
     .mode-button:hover {
-        border-color: #7657e8;
-        background: #faf8ff;
+        filter: brightness(1.12);
+        border-color: rgba(255, 255, 255, 0.75);
     }
 
     /* COLOR-CODED GAME MODE BUTTONS */
-
-    .mode-button.easy-mode {
-        border-color: #2f9e44;
-        background: #f2fbf4;
-    }
-
-    .mode-button.easy-mode strong {
-        color: #2f9e44;
-    }
-
-    .mode-button.easy-mode:hover {
-        border-color: #267a36;
-        background: #e8f7eb;
-    }
-
-    .mode-button.medium-mode {
-        border-color: #2a9d8f;
-        background: #f0fbf9;
-    }
-
-    .mode-button.medium-mode strong {
-        color: #2a9d8f;
-    }
-
-    .mode-button.medium-mode:hover {
-        border-color: #217a70;
-        background: #e5f7f4;
-    }
-
-    .mode-button.advanced-mode {
-        border-color: #4361ee;
-        background: #f2f5ff;
-    }
-
-    .mode-button.advanced-mode strong {
-        color: #4361ee;
-    }
-
-    .mode-button.advanced-mode:hover {
-        border-color: #344dcc;
-        background: #e9edff;
-    }
-
-    .mode-button.professional-mode {
-        border-color: #d62839;
-        background: #fff5f5;
-    }
-
-    .mode-button.professional-mode strong {
-        color: #d62839;
-    }
-
-    .mode-button.professional-mode:hover {
-        border-color: #b51f30;
-        background: #ffecee;
-    }
-
-    .mode-button.genius-mode {
-        border-color: #7b2cbf;
-        background: #faf3ff;
-    }
-
-    .mode-button.genius-mode strong {
-        color: #7b2cbf;
-    }
-
-    .mode-button.genius-mode:hover {
-        border-color: #62229a;
-        background: #f3e8ff;
-    }
-
-    .mode-button.master-mode {
-        border-color: #123b6d;
-        background: #f2f7fc;
-    }
-
-    .mode-button.master-mode strong {
-        color: #123b6d;
-    }
-
-    .mode-button.master-mode:hover {
-        border-color: #0d2b50;
-        background: #e8f1f9;
-    }
-
-    .mode-button.extreme-mode {
-        border-color: #f28c28;
-        background: #fff8ef;
-    }
-
-    .mode-button.extreme-mode strong {
-        color: #f28c28;
-    }
-
-    .mode-button.extreme-mode:hover {
-        border-color: #c96f16;
-        background: #fff0dd;
-    }
-
-    .mode-button.impossible-mode {
-        border-color: #d62839;
-        background: #fff5f5;
-    }
-
-    .mode-button.impossible-mode strong {
-        color: #d62839;
-    }
-
-    .mode-button.impossible-mode:hover {
-        border-color: #b51f30;
-        background: #ffecee;
-    }
-
-    .mode-button.omnipotent-mode {
-        border-color: #000000;
-        background: #f5f5f5;
-    }
-
-    .mode-button.omnipotent-mode strong {
-        color: #000000;
-    }
-
-    .mode-button.omnipotent-mode:hover {
-        border-color: #333333;
-        background: #ededed;
-    }
+    .mode-button.easy-mode { background: #2f9e44; }
+    .mode-button.medium-mode { background: #2a9d8f; }
+    .mode-button.advanced-mode { background: #4361ee; }
+    .mode-button.professional-mode { background: #d62839; }
+    .mode-button.genius-mode { background: #7b2cbf; }
+    .mode-button.master-mode { background: #123b6d; }
+    .mode-button.extreme-mode { background: #f28c28; }
+    .mode-button.impossible-mode { background: #d62839; }
+    .mode-button.omnipotent-mode { background: #000000; }
 
     .mode-title {
         text-align: center;
         margin: 0 0 8px;
-        color: #6047c5;
+        color: #ffffff;
     }
 
     @media (max-width: 600px) {
